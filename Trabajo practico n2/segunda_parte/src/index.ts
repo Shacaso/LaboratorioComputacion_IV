@@ -106,8 +106,8 @@ async function run() {
 
     // await findByRegex(countries);
 
-    let result = await countries.createIndex( { "codigoPais" : 1 },{unique: true,sparse: true,expireAfterSeconds: 3600})
-    await result.forEach(console.dir);
+    await createIndexFunction(countries);
+
 
 
   } finally {
@@ -122,6 +122,10 @@ run().catch(console.dir);
 
 
 
+
+async function createIndexFunction(countries) {
+  await countries.createIndex({ "codigoPais": 1 }, { unique: true, sparse: true, expireAfterSeconds: 3600 });
+}
 
 async function findByRegex(countries) {
   let result = await countries.find({ nombrePais: { $regex: /na$/ } });
