@@ -20,7 +20,7 @@ async function connect() {
     // (await temp).map(e => console.log(e))
 
     //   (await temp).forEach(element => {
-    //     console.log(element)
+    //     console.log(element) 
     //   });
 
   } catch (err) {
