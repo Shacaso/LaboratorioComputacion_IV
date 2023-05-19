@@ -13,16 +13,8 @@ async function connect() {
     const intruments = database.collection('instruments')
     console.log('>>> Connect to collection Instrument')
 
-    console.log(intruments.find().toArray())
     return (intruments.find().toArray())
 
-    // const temp = intruments.find().toArray()
-    // console.log(typeof(temp));
-    // (await temp).map(e => console.log(e))
-
-    //   (await temp).forEach(element => {
-    //     console.log(element) 
-    //   });
 
   } catch (err) {
     if (!err) {

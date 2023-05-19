@@ -15,13 +15,19 @@ interface Instrument {
 }
 
 async function getJSON() {
-    const res = await fetch('http://localhost:6757/api/instruments/getAll');
-    return await res.json();
+    try {
+        const URL = 'http://localhost:6757/api/instruments/getAlls'
+
+        const res = await fetch( URL );
+        return await res.json();
+    } catch (error) {
+        console.log(error)
+    }
 }
 
 function jsonToArray(): Array<Instrument> {
     getJSON().then(e => {
-       let instruments = e.slice(); 
+        let instruments = e.slice();
         instruments.map(e => console.log(e))
         return instruments;
     }).catch(err => console.log(`>>> ${err}`))
@@ -31,10 +37,8 @@ function jsonToArray(): Array<Instrument> {
 function Productos() {
 
     const [instruments, setInstrument] = useState<Instrument[]>([]);
-    
-    const getInstrumentos = async () => {
-        const aux = jsonToArray();
 
+    const getInstrumentos = async () => {
         let data: Instrument[] = await getJSON();
         setInstrument(data);
     }
