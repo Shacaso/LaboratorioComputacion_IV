@@ -1,16 +1,17 @@
-import express from "express";
-import {getAllInstruments, getInstrument} from "../services/instrumentService";
+import express from 'express'
+import { pool } from '../database/connect'
+const router = express.Router()
 
-const router = express.Router();
-
-router.get('/getAll', (_req, res) => {
-    getAllInstruments().then(e => console.log(e));
-    getAllInstruments().then(e => res.send((e)));
+router.get('/getAll', async (_req, res) => {
+  const [result] = await pool.query('SELECT * FROM instrument')
+  let instruments = Object.values(JSON.parse(JSON.stringify(result)));
+  res.json(instruments)
 })
 
-router.get('/get/:id', (req, res) => {
-    const country = getInstrument(req.params.id)
-    country.then(e => res.send(e))
+router.get('/get/:id', async (req, res) => {
+    const [result] = await pool.query(`SELECT * FROM instrument WHERE id = ${req.params.id}`)
+    let instruments = Object.values(JSON.parse(JSON.stringify(result)));
+    res.json(instruments[0])
 })
 
-export default router;
+export default router

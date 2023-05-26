@@ -1,64 +1,49 @@
 import { useEffect, useState } from 'react';
 import Nav from '../component/Nav';
 import Card from '../component/Card';
+import { Instrument } from '../model/Instruments';
+import SearcherBox from '../component/SearcherBox/SearcherBox';
+import Empty from '../component/Empty/Empty';
 
-interface Instrument {
-    "id": string
-    "instrumento": string,
-    "marca": string,
-    "modelo": string,
-    "imagen": string,
-    "precio": string,
-    "costoEnvio": string,
-    "cantidadVendida": string,
-    "descripcion": string
-}
-
-async function getJSON() {
-    try {
-        const URL = 'http://localhost:6757/api/instruments/getAlls'
-
-        const res = await fetch( URL );
-        return await res.json();
-    } catch (error) {
-        console.log(error)
-    }
-}
-
-function jsonToArray(): Array<Instrument> {
-    getJSON().then(e => {
-        let instruments = e.slice();
-        instruments.map(e => console.log(e))
-        return instruments;
-    }).catch(err => console.log(`>>> ${err}`))
-    return [];
-}
+const URL_BACKEND = 'http://localhost:3001/api/instruments/getAll'
 
 function Productos() {
 
     const [instruments, setInstrument] = useState<Instrument[]>([]);
+    const [filterInstruments, setFilterInstruments] = useState(Array<any>);
 
-    const getInstrumentos = async () => {
-        let data: Instrument[] = await getJSON();
-        setInstrument(data);
-    }
 
     useEffect(() => {
-        getInstrumentos();
+        fetch(URL_BACKEND)
+            .then(response => response.json())
+            .then(data => { setInstrument(data); setFilterInstruments(data) })
+            .catch(err => console.log(err))
     }, []);
+
+    const InstrumentFilter = (searcher: string) => {
+        const filtered = filterInstruments.filter(instrument => ((instrument.modelo).toLowerCase()).includes((searcher).toLowerCase()));
+        (filterInstruments.length === 0 && setFilterInstruments(instruments))
+        setFilterInstruments(filtered)
+    }
 
     return (
         <div className="Productos">
+
+            <SearcherBox handleChange={InstrumentFilter} />
+            <div className='bg-gray-800 p-1 flex justify-center'>
+            <button className='text-white'>Add Instrument</button>
+            </div>
 
             <div className="h-screen w-full bg-white relative flex overflow-hidden">
                 <Nav></Nav>
 
                 <div className="w-full h-full flex flex-col justify-between">
                     <main className="max-w-full h-full flex relative overflow-y-hidden">
-                        <div className="h-[100vh] scrollbar-corner-black scrollbar-thin scrollbar-thumb-gray-800 scrollbar-track-gray-300 overflow-y-scroll">
+                        <div className="h-[100vh] w-full scrollbar-corner-black scrollbar-thin scrollbar-thumb-gray-800 scrollbar-track-gray-300 overflow-y-scroll">
                             <div className='flex flex-wrap  items-center justify-center min-h-screen from-[#F9F5F3] via-[#F9F5F3] to-[#F9F5F3] bg-gradient-to-br px-2'>
-                                {
-                                    instruments.map(instrument => Card(instrument))
+
+                                {filterInstruments.length === 0 ? <Empty msg="No Match!" /> : filterInstruments.map(instrument =>
+                                    (instrument && Card(instrument)))
                                 }
                             </div>
                         </div>

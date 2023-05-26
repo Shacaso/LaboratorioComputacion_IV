@@ -1,22 +1,16 @@
-import express from "express";
-import instrumentRouter from './routers/instruments'
 const cors = require('cors')
+import express from 'express'
+const morgan = require('morgan')
+import instrumentRouter from './routers/instruments'
 
-
-const app = express();
-app.use(express.json());
+const app = express()
 app.use(cors())
+app.use(morgan('dev'));
 
-const PORT = 6757;
-
+app.set('port', process.env.PORT || 3001);
 
 app.use('/api/instruments', instrumentRouter);
 
-// app.get("/ping", (_req, res) => {
-//   console.log("someone pinged here!!!");
-//   res.send("pong");
-// });
-
-app.listen(PORT, () => {
-  console.log(`Server running on port ${PORT}`);
-});
+app.listen(app.get('port'), () => {
+  console.log(`Server running on port ${app.get('port')}`)
+})
