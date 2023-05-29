@@ -7,6 +7,8 @@ import Productos from './pages/Productos';
 import reportWebVitals from './reportWebVitals';
 import { BrowserRouter, Routes, Route } from "react-router-dom";
 import Maps from './pages/Maps';
+import Crud from './pages/Crud';
+import CreateUpdate from './pages/CreateUpdate';
 
 const root = ReactDOM.createRoot(
   document.getElementById('root') as HTMLElement
@@ -18,9 +20,10 @@ root.render(
       <Route index element={<App />} />
       <Route path="*" element={<App />} />
       <Route path="/contador/:id" element={<Contador />} />
-      {/* <Route path="/contador/{id}" element={<Contador />} /> */}
       <Route path="/productos" element={<Productos/>} />
       <Route path="/maps" element={<Maps/>} />
+      <Route path="/crud" element={<Crud/>} />
+      <Route path="/save/:id" element={<CreateUpdate/>} />
     </Routes>
   </BrowserRouter>
 );

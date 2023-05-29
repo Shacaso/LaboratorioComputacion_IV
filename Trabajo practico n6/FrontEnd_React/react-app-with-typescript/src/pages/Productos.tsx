@@ -29,11 +29,6 @@ function Productos() {
     return (
         <div className="Productos">
 
-            <SearcherBox handleChange={InstrumentFilter} />
-            <div className='bg-gray-800 p-1 flex justify-center'>
-            <button className='text-white'>Add Instrument</button>
-            </div>
-
             <div className="h-screen w-full bg-white relative flex overflow-hidden">
                 <Nav></Nav>
 
@@ -42,7 +37,8 @@ function Productos() {
                         <div className="h-[100vh] w-full scrollbar-corner-black scrollbar-thin scrollbar-thumb-gray-800 scrollbar-track-gray-300 overflow-y-scroll">
                             <div className='flex flex-wrap  items-center justify-center min-h-screen from-[#F9F5F3] via-[#F9F5F3] to-[#F9F5F3] bg-gradient-to-br px-2'>
 
-                                {filterInstruments.length === 0 ? <Empty msg="No Match!" /> : filterInstruments.map(instrument =>
+                                {
+                                filterInstruments.length === 0 ? <Empty msg="No Match!" /> : filterInstruments.map(instrument =>
                                     (instrument && Card(instrument)))
                                 }
                             </div>

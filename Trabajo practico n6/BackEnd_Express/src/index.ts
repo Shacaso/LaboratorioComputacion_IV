@@ -6,6 +6,8 @@ import instrumentRouter from './routers/instruments'
 const app = express()
 app.use(cors())
 app.use(morgan('dev'));
+app.use(express.json());
+app.use(express.urlencoded()); 
 
 app.set('port', process.env.PORT || 3001);
 

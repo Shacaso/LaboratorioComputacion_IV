@@ -35,7 +35,7 @@ function Contador() {
             <div className=' sm:p-6 w-[500px]'>
               <div className='text-left'>
                  <p className='text-[#7C7C80] font-[15px] mt-1 '>{instrument?.cantidadVendida} vendidos</p>
-                <p className='font-bold py-4 text-[40px] leading-7 mb-1'>{instrument?.modelo}</p><hr />
+                <p className='font-bold py-4 text-[20px] leading-7 mb-1'>{instrument?.instrumento}</p><hr />
                 <p className='py-2 text-[36px] mb-1 text-gray-900'>$ {instrument?.precio}</p>
                 <p className='font-[15px] mt-1 text-[#7C7C80]'>Marca: {instrument?.marca}</p>
                 <p className='font-[15px] mt-1 text-[#7C7C80]'>Modelo: {instrument?.modelo}</p>
