@@ -17,7 +17,7 @@
             </div>
           </div>
           <div class="col actions">
-            <a v-bind:href="'http://localhost:8080/detailProduct/'+(instrument.id)">
+            <a @bind:href="'http://localhost:8080/detailProduct/'+(instrument.id)">
               <button class="btn btn-light">View</button>
             </a>
 
@@ -36,17 +36,13 @@ import { defineComponent } from 'vue';
 
 export default defineComponent({
   name: 'ProductsView',
-  components: {
-  },
   data() {
     return {
-      listInstrument: [],
-      link: 'http://localhost:8080/detailProduct/1'
+      listInstrument: []
     }
   },
   created() {
     this.fetchData()
-
   },
   methods: {
     fetchData() {
