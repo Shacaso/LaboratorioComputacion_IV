@@ -4,6 +4,15 @@
       <a :href="'http://localhost:8080/save/' + 0">
         <button class="p-2 bg-gray-400 mt-3">Add Instrumento</button>
       </a>
+      <form >
+      <label for="priceRange">min: $ {{ valueMin }}</label>
+        <input v-model="valueMin"  min="0" max="4000" type="range" name="priceRangeMin" id="priceRangeMin">
+        
+        <input v-model="valueMax"  min="0" max="4000" type="range" name="priceRangeMax" id="priceRangeMax">
+        <label for="priceRange">$ {{ valueMax }} :max</label>
+
+        <button type="button" @click="handleRange()" class="btn btn-primary">filter</button>
+      </form>
     </div>
 
     <div v-for="instrument in listInstrument" :key="instrument.id">
@@ -46,7 +55,9 @@ export default defineComponent({
   name: 'ProductsView',
   data() {
     return {
-      listInstrument: [] as Instrument[]
+      listInstrument: [] as Instrument[],
+      valueMin: Number,
+      valueMax: Number
     }
   },
   created() {
@@ -61,6 +72,9 @@ export default defineComponent({
     deleteInstrument(id: number) {
       fetch('http://localhost:3001/api/instruments/delete/' + id)
       alert('Delete successfully')
+    },
+    handleRange(){
+      this.listInstrument = this.listInstrument.filter(instrument => +instrument.precio > +this.valueMin && +instrument.precio < +this.valueMax)
     }
   },
 });
