@@ -1,0 +1,45 @@
+<div class="d-flex justify-content-center my-1">
+<a href="/form-instrument/0" class="btn btn-dark">Add instrument</a>
+</div>
+<table class="table table-dark table-size">
+    <thead>
+        <tr>
+            <th>ID</th>
+            <th>Instrumento</th>
+            <th>Marca</th>
+            <th>Modelo</th>
+            <th>Imagen</th>
+            <th>Precio</th>
+            <th>Costo de Envío</th>
+            <th>Cantidad Vendida</th>
+            <th>Descripción</th>
+            <th>Actions</th>
+        </tr>
+    </thead>
+    <tbody>
+        <tr *ngFor="let instrument of instruments">
+            <td>{{ instrument.id }}</td>
+            <td>{{ instrument.instrumento }}</td>
+            <td>{{ instrument.marca }}</td>
+            <td>{{ instrument.modelo }}</td>
+            <td>{{ instrument.imagen }}</td>
+            <td>{{ instrument.precio }}</td>
+            <td>{{ instrument.costoEnvio }}</td>
+            <td>{{ instrument.cantidadVendida }}</td>
+            <td>{{ (instrument.descripcion).substr(0,100) }}</td>
+            <td>
+                <button class="btn btn-light m-1" type="button"><a class="text-black text-decoration-none" href="detail-product/{{instrument.id}}" type="button">View</a></button>
+                <button class="btn btn-light m-1 "><a class="text-black text-decoration-none" href="/form-instrument/{{instrument.id}}" type="button">Edit</a></button>
+                <button class="btn btn-light m-1" (click)="deleteInstrument(instrument.id)" type="button">Delete</button>
+            </td>
+
+        </tr>
+    </tbody>
+</table>
+
+<style>
+    .table-size{
+        height:90.7vh;
+        margin-bottom: 0px;
+    }
+</style>
