@@ -1,0 +1,22 @@
+<div class="card mt-5">
+  <div class="row g-0">
+    <div class="col-md-4 d-flex align-items-center ">
+      <img  class=" img-fluid mx-auto d-block" src="https://cdn.hashnode.com/res/hashnode/image/upload/v1678352679570/88aebfe3-3bfc-4aca-a068-cf97991d13df.svg" alt="react-img">
+    </div>
+    <div class="col-md-8">
+      <div class="card-body">
+        <p class="text-muted font-15px">{{instrument.cantidadVendida}} vendidos</p>
+            <h5 class="font-weight-bold  text-20px leading-7 mb-1">{{instrument.instrumento}}</h5>
+            <hr />
+            <p class="py-1 text-36px  text-gray-900">$ {{instrument.precio}}</p>
+            <p class="font-15px  text-muted">Marca: {{instrument.marca}}</p>
+            <p class="font-15px  text-muted">Modelo: {{instrument.modelo}}</p>
+            <p class="pt-1 font-15px  text-muted">{{instrument.descripcion}}</p>
+            <p class="pt-1 font-15px  text-muted">Costo de envio:</p>
+            <div [innerHTML]="sendCost(instrument.costoEnvio)"></div>
+            <button class="my-2 btn btn-dark btn-lg btn-block custom-button">Agregar al carrito</button>
+
+      </div>
+    </div>
+  </div>
+</div>
