@@ -2,7 +2,7 @@ import { useState, useEffect} from 'react';
 import Nav from '../component/Nav';
 import { useParams } from 'react-router-dom';
 import { Instrument } from '../model/Instruments';
-
+import { ActivatedRoute } from '@angular/router';
 
 const send = (instrument: Instrument) => {
   if (instrument?.costoEnvio === "G") {

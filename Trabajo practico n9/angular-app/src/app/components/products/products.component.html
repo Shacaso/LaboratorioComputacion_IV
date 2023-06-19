@@ -1,0 +1,13 @@
+<ul class="list-group list-group-flush bg-dark text-light">
+    <a href="/detail-product/{{instrument.id}}" *ngFor="let instrument of Instruments" class="list-group-item bg-dark text-light">
+        <div class="d-flex align-items-center ">
+            <img width="200" class="me-5" src="https://cdn.hashnode.com/res/hashnode/image/upload/v1678352679570/88aebfe3-3bfc-4aca-a068-cf97991d13df.svg" alt="react-img">
+            <div class="ml-3">
+              <h6>{{ instrument.instrumento }}</h6>
+              <h6>$ {{ instrument.precio }}</h6>
+              <div [innerHTML]="sendCost(instrument.costoEnvio)"></div>
+              <h6>{{ instrument.cantidadVendida }} vendidos</h6>
+            </div>
+          </div>
+    </a>
+  </ul>
