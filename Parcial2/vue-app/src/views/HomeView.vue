@@ -2,11 +2,13 @@
   <div class="home">
     <h3>Provincia</h3>
     <select class="cbox" v-model="selectedProvince" @change="handleChangeProvince">
+      <option value="null">Seleccione una provincia</option>
       <option v-for="province in provinces" :key="province.id" :value="province.id">{{ province.provincia }}</option>
     </select>
 
     <h3 >Localidad</h3>
     <select class="cbox" v-model="selectedLocation">
+      <option value="null">Seleccione una localidad</option>
       <option v-for="location in locations" :key="location.id" :value="location.id">{{ location.localidad }}</option>
     </select>
   </div>

@@ -10,6 +10,7 @@
             <tr>
               <th scope="col" class="px-6 py-4">#</th>
               <th scope="col" class="px-6 py-4">Localidad</th>
+              <th scope="col" class="px-6 py-4">Provincia</th>
               <th scope="col" class="px-6 py-4"></th>
             </tr>
           </thead>
@@ -17,6 +18,8 @@
             <tr v-for="location in locations" :key="location.id" class="border-b dark:border-neutral-500">
               <td class="whitespace-nowrap px-6 py-4 font-medium">{{ location.id }}</td>
               <td class="whitespace-nowrap px-6 py-4">{{ location.localidad }}</td>
+              <td class="whitespace-nowrap px-6 py-4">{{ getLocationForProvince(location.id_provincia) }}</td>
+
               <td class="whitespace-nowrap py-4">
                 <button @click="goToEdit(location.id)" class="px-2">Edit</button>
                 <button @click="deleteLocation(location.id)" class="px-2">Delete</button>
@@ -31,21 +34,34 @@
 <script lang="ts">
 import { ref, reactive, onMounted } from 'vue'
 import { Location } from '@/model/Location'
+import { Province } from '@/model/Province'
 
 export default {
   name: 'CrudView',
   setup () {
     const locations = ref<Location[]>([])
+    const provinces = ref<Province[]>([])
     const searchValue = ref('')
 
     const fetchData = async () => {
       try {
-        const response = await fetch('http://168.194.207.98:8081/api_localidad/get_localidades_por_nombre.php?nombre=')
-        const data = await response.json()
-        locations.value = data
+        const responseLocation = await fetch('http://168.194.207.98:8081/api_localidad/get_localidades_por_nombre.php?nombre=')
+        const responseProvince = await fetch('http://168.194.207.98:8081/api_localidad/get_provincias.php')
+        const dataLocation = await responseLocation.json()
+        const dataProvince = await responseProvince.json()
+        provinces.value = dataProvince
+        locations.value = dataLocation
       } catch (error) {
         console.error(error)
       }
+    }
+
+    const getLocationForProvince = (value:string):string => {
+      let aux = ''
+      provinces.value.forEach(element => {
+        if (element.id === value) { aux = element.provincia }
+      })
+      return aux
     }
 
     const handleSubmit = () => {
@@ -66,7 +82,6 @@ export default {
       alert('Delete successfully')
       fetch(`http://168.194.207.98:8081/api_localidad/delete_localidad.php?id=${id}`)
         .then(() => {
-          // Actualizar la lista de ubicaciones después de eliminar una
           locations.value = locations.value.filter(location => location.id !== id)
         })
         .catch(error => {
@@ -80,8 +95,10 @@ export default {
 
     return {
       locations,
+      provinces,
       searchValue,
       handleSubmit,
+      getLocationForProvince,
       goToAddLocation,
       goToEdit,
       deleteLocation
