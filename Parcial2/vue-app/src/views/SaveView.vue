@@ -1,3 +1,51 @@
+<script setup lang="ts">
+import { onMounted, ref } from 'vue'
+import { useRoute } from 'vue-router'
+import { Location } from '@/model/Location'
+import { Province } from '@/model/Province'
+
+const route = useRoute()
+const id = ref(route.params.id)
+const location = ref<Location>(new Location())
+const provinces = ref<Province[]>([])
+
+const fetchData = async () => {
+  try {
+    const responseProvince = await fetch('http://168.194.207.98:8081/api_localidad/get_provincias.php')
+    provinces.value = await responseProvince.json()
+
+    if (+id.value > 0) {
+      const responseLocation = await fetch(`http://168.194.207.98:8081/api_localidad/get_localidad.php?id=${id.value}`)
+      location.value = await responseLocation.json()
+    }
+  } catch (error) {
+    console.error(error)
+  }
+}
+const handleSubmit = (event: any) => {
+  event.preventDefault()
+  const url = Number(id.value) > 0
+    ? 'http://168.194.207.98:8081/api_localidad/put_localidad.php'
+    : 'http://168.194.207.98:8081/api_localidad/post_localidad.php'
+
+  const methodURL = Number(id.value) > 0
+    ? 'PUT'
+    : 'POST'
+
+  fetch(url, {
+    method: methodURL,
+    headers: { 'Content-Type': 'application/json' },
+    body: JSON.stringify(location.value)
+  })
+    .then(() => (window.location.href = 'http://localhost:8080/'))
+}
+
+onMounted(() => {
+  fetchData()
+})
+
+</script>
+
 <template>
   <div class="form">
     <h1>Formulario para {{ +id > 0 ? 'modificar' : 'agregar' }}</h1>
@@ -21,69 +69,6 @@
     </form>
   </div>
 </template>
-
-<script lang="ts">
-import { onMounted, ref } from 'vue'
-import { useRoute } from 'vue-router'
-import { Location } from '@/model/Location'
-import { Province } from '@/model/Province'
-
-export default {
-  name: 'SaveView',
-  setup () {
-    const route = useRoute()
-    const id = ref(route.params.id)
-    const location = ref<Location>(new Location())
-    const provinces = ref<Province[]>([])
-    const selectedProvince = ref(null)
-
-    const fetchData = async () => {
-      try {
-        const responseProvince = await fetch('http://168.194.207.98:8081/api_localidad/get_provincias.php')
-        provinces.value = await responseProvince.json()
-
-        if (+id.value > 0) {
-          const responseLocation = await fetch(`http://168.194.207.98:8081/api_localidad/get_localidad.php?id=${id.value}`)
-          location.value = await responseLocation.json()
-        }
-      } catch (error) {
-        console.error(error)
-      }
-    }
-    const handleSubmit = (event: any) => {
-      event.preventDefault()
-      const url = Number(id.value) > 0
-        ? 'http://168.194.207.98:8081/api_localidad/put_localidad.php'
-        : 'http://168.194.207.98:8081/api_localidad/post_localidad.php'
-
-      const methodURL = Number(id.value) > 0
-        ? 'PUT'
-        : 'POST'
-
-      fetch(url, {
-        method: methodURL,
-        headers: { 'Content-Type': 'application/json' },
-        body: JSON.stringify(location.value)
-      })
-        .then(() => (window.location.href = 'http://localhost:8080/'))
-    }
-    const handleChangeProvince = (event: any) => {
-      location.value.id_provincia = event.target.value
-    }
-    onMounted(() => {
-      fetchData()
-    })
-    return {
-      id,
-      location,
-      provinces,
-      selectedProvince,
-      handleChangeProvince,
-      handleSubmit
-    }
-  }
-}
-</script>
 
 <style scoped>
 .form{
