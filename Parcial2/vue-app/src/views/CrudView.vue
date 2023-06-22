@@ -11,18 +11,17 @@
               <th scope="col" class="px-6 py-4">#</th>
               <th scope="col" class="px-6 py-4">Localidad</th>
               <th scope="col" class="px-6 py-4">Provincia</th>
-              <th scope="col" class="px-6 py-4"></th>
+              <th scope="col" class="px-6 py-4">Acciones</th>
             </tr>
           </thead>
           <tbody>
-            <tr v-for="location in locations" :key="location.id" class="border-b dark:border-neutral-500">
-              <td class="whitespace-nowrap px-6 py-4 font-medium">{{ location.id }}</td>
-              <td class="whitespace-nowrap px-6 py-4">{{ location.localidad }}</td>
-              <td class="whitespace-nowrap px-6 py-4">{{ getLocationForProvince(location.id_provincia) }}</td>
-
-              <td class="whitespace-nowrap py-4">
-                <button @click="goToEdit(location.id)" class="px-2">Edit</button>
-                <button @click="deleteLocation(location.id)" class="px-2">Delete</button>
+            <tr v-for="location in locations" :key="location.id">
+              <td class="cols-size">{{ location.id }}</td>
+              <td class="cols-size">{{ location.localidad }}</td>
+              <td class="cols-size">{{ getLocationForProvince(location.id_provincia) }}</td>
+              <td>
+                <button @click="goToEdit(location.id)" class="btn">Edit</button>
+                <button @click="deleteLocation(location.id)" class="btn">Delete</button>
               </td>
             </tr>
           </tbody>
@@ -56,7 +55,7 @@ export default {
       }
     }
 
-    const getLocationForProvince = (value:string):string => {
+    const getLocationForProvince = (value:number):string => {
       let aux = ''
       provinces.value.forEach(element => {
         if (element.id === value) { aux = element.provincia }
@@ -74,16 +73,17 @@ export default {
       window.location.href = 'http://localhost:8080/save/0'
     }
 
-    const goToEdit = (id:string) => {
+    const goToEdit = (id:number) => {
       window.location.href = `http://localhost:8080/save/${id}`
     }
 
-    const deleteLocation = (id:string) => {
+    const deleteLocation = (id:number) => {
       alert('Delete successfully')
       fetch(`http://168.194.207.98:8081/api_localidad/delete_localidad.php?id=${id}`)
         .then(() => {
-          locations.value = locations.value.filter(location => location.id !== id)
+          locations.value = locations.value.filter(location => location.id !== Number(id))
         })
+        .then(() => (window.location.href = 'http://localhost:8080/crud'))
         .catch(error => {
           console.error(error)
         })
@@ -114,24 +114,30 @@ export default {
   width: 100%;
 }
 .nav-crud{
-  padding: 5px;
-  display: flex;
-  flex-direction: row;
+  padding: 10px;
 }
 .btn-size{
   width: 150px;
   height: 45px;
 }
 .input-size{
-  width: 800px;
+  width: 80%;
   height: 40px;
   padding-left: 4px;
   padding-right: 4px;
   margin-left: 10px;
 }
 .table-size{
-  display: inline-block;
-  width: 100%;
-  padding: 2px 8px
+  display: grid;
+  grid-column: 1fr  1fr  1fr 1fr;
+}
+
+.cols-size{
+  padding: 6px 4px;
+}
+
+.btn{
+  margin: 4px 4px;
+  padding: 3px 5px;
 }
 </style>

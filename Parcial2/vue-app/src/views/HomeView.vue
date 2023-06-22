@@ -78,5 +78,6 @@ export default {
 .cbox {
   margin-top: 20px;
   width: 500px;
+  padding: 4px 6px;
 }
 </style>
